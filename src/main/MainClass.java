@@ -14,7 +14,7 @@ import pUflp.ActionUFLP;
 import pUflp.Locations;
 import pUflp.TestUFLP;
 import java.util.Random; 
-
+import Ant.AntAction;
 
 /**
  *
@@ -32,6 +32,7 @@ public class MainClass {
     static ActionUFLP uflp = new ActionUFLP();
     static TestUFLP tUFLP = new TestUFLP();
     static Random random = new Random();
+    static AntAction ant = new AntAction();
     static DecimalFormat df = new DecimalFormat("0.00000");
     
     public static void main(String[] args) throws IOException{
@@ -57,48 +58,32 @@ public class MainClass {
         int choosen = 0;
         int opening[] = new int[uflp.getN()];
         int arrAns[] = new int[uflp.getN()];
-        //double pheromone[][] = new double[uflp.getN()][uflp.getN()];
-        //char location[] = new char[10];
+        double summation;
+        int round = uflp.getN();
+        double W[] = new double[uflp.getN()];
         
-        double summation = 0;
-        int numOfAnt = 3;
-        int time = 2;
-//        int arrANS[][] = new int[uflp.getN()][numOfAnt];
-//        ArrayList<Integer> answer = new ArrayList<Integer>();
+        
         System.out.println();
         System.out.println("---Ant System---");
         
         for(int i=0;i<uflp.getN();i++){
             arrAns[i] = 0;
+            W[i] = uflp.getW()[i];
         }
+        
         //-----------------------------------------------------------------------------
-//        for(int k=0;k<time;k++){
-            for(int j=0;j<uflp.getN();j++){
+
+            for(int j=0;j<round;j++){
                 System.out.println("รอบที่"+(j+1));
                 summation = 0;
-                //findT&ETA
-                for(int i =0;i<uflp.getN();i++){
-                    T[i] = 0.1;   
-                    System.out.println("T"+(i+1)+" : "+T[i]); 
-                    eta[i] = 1/uflp.getW()[i]; //(random.nextInt(2000)+1000.0);         //(1000 + (int)(Math.random() * (5000))
-                    String output = df.format(eta[i]);
-                    System.out.println("ต้นทุนแต่ละสถานี(w) : "+uflp.getW()[i]);
-                    System.out.println("ETA"+(i+1)+" : "+eta[i]);
-                    p[i] = (Math.pow(T[i], alpha)* Math.pow(eta[i], beta));    
-                    summation += (Math.pow(T[i], alpha)* Math.pow(eta[i], beta));       
-                    System.out.println("p"+(i+1)+" : "+p[i]);
-                    //String x = df.format(summation);
-                    System.out.println("sum : "+summation);
-                    System.out.println("-------------------------------------");
-                }
+                ant.findEquation(n,W,eta,T,alpha,beta);
+                summation = ant.findSummation1(p);
                 System.out.println("sumT&ETA : " + summation);
                 System.out.println("------------------------------");
                 //-----------------------------------------------------------------------------
                 System.out.println("ค่า P หลังจากหารด้วย summation");
-                for(int i=0;i<uflp.getN();i++){
-                    p[i] = p[i]/summation;      
-                    System.out.println(p[i]);
-                }System.out.println("-------------------------------");
+                ant.pDividedBySummation(p,summation);
+                System.out.println("-------------------------------");
                 //---------------------------------------------------------------------------
                 double temp = 0;
                 for(int i=0;i<uflp.getN();i++){
@@ -158,13 +143,9 @@ public class MainClass {
                 }                  
             }
             //----------------------------------------------------------------------     
-            
-                for(int a:arrAns){
-                    System.out.println(a+" ");
-                }
-                for(int b:opening){
-                    System.out.println(b+" ");
-                }
+                ant.printCity(arrAns);
+                System.out.println();
+                ant.printStatus(opening);
     
     }
 }
