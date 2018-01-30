@@ -13,23 +13,25 @@ import java.util.Random;
 
 public class test1 {
     public static void main(String[] args){
-        Random ran = new Random();
-        double arr[] = new double[5];
-        double sum[] = new double[5];
-        for(int i=0;i<5;i++){
-            arr[i] = ran.nextDouble();System.out.println(arr[i]); 
-            if(i==0){
-                sum[i] = arr[i];
+        int arr[] = new int[5];
+        int x = 1;
+        arr[0] = 2;
+        arr[1] = 4;
+        arr[2] = 5;
+        arr[3] = 1;
+        arr[4] = 0;
+        
+        
+        boolean a =true;
+        for(int i =0;i<5;i++){
+            if(x == arr[i]){
+                System.out.println("find");
             }
             else{
-                sum[i] = (sum[i-1]+sum[i]);
-            }System.out.println(sum[i]); 
-        }  
-//        double x = ran.nextDouble();
-//        if(){
-//                    arr[i] = i+1;
-//                    System.out.println("i+1");
-//                    
-//                }
+                a = false;
+                arr[i] = x;
+            }
+        }
+                 
     }
 }

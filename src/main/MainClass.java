@@ -63,16 +63,14 @@ public class MainClass {
         double summation = 0;
         int numOfAnt = 3;
         int time = 2;
-        int arrANS[][] = new int[uflp.getN()][numOfAnt];
-        ArrayList<Integer> answer = new ArrayList<Integer>();
+//        int arrANS[][] = new int[uflp.getN()][numOfAnt];
+//        ArrayList<Integer> answer = new ArrayList<Integer>();
         System.out.println();
         System.out.println("---Ant System---");
         
-//        for(int i=0;i<uflp.getN();i++){
-//            for(int j=0;j<uflp.getN();j++){
-//                pheromone[i][j] = 0.1;
-//            }
-//        }
+        for(int i=0;i<uflp.getN();i++){
+            arrAns[i] = 0;
+        }
         //-----------------------------------------------------------------------------
 //        for(int k=0;k<time;k++){
             for(int j=0;j<uflp.getN();j++){
@@ -119,23 +117,29 @@ public class MainClass {
                     }  
                 }
                 //------------------------------------------------------------------------------------
-                double r1 = Math.random();
-                System.out.println("ค่าสุ่มเลือกเมือง : "+r1);
-
+                
+                
+                
+                boolean x = true;
                 do{
-                    boolean x = true;
+                    double r1 = Math.random();
+                    System.out.println("ค่าสุ่มเลือกเมือง : "+r1);
                     for(int i=0;i<uflp.getN();i++){
                         if(r1<=percentage[i]){
                             choosen = i+1;
+                            System.out.println(choosen);
                             break;
                         }              
                     }
-                    for(int k=0;k<uflp.getN();k++){
+                    for(int k=0;k<(uflp.getN()-1);k++){
                         if(choosen == arrAns[k]){
                             x = true;
+                            break;
+                        }else{
+                            x = false;
                         }
-                    }
-                }while(true);
+                    }arrAns[j] = choosen;
+                }while(x);
                 System.out.println("เมืองที่เลือก : " + choosen);  
                 
                 
