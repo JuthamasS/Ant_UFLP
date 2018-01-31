@@ -46,8 +46,12 @@ public class MainClass {
         }
         uflp.inputAll(mc.inputFile, textXml); //แสดงข้อมูล ระยะทางสถานีไปโกดัง ต้นทุนสถานี
         
-        
-        //-------------------------------------------------------------------------------
+        double meanBestFitness = 0;//ค่าเฉลียฟิสเนส
+        double standardDeviation = 0;//ค่าเบียนเบน
+        double sumXPowTwo = 0; //ไว้หาส่วนเบียนเบน
+        double sumX = 0;//ผลรวมของx
+            
+        //------คำนวณ ant ความน่าจะเป็นที่จะเลือกเมือง----------------------------------
         double T[] = new double[uflp.getN()];
         double eta[] = new double[uflp.getN()];
         double percentage[] = new double[uflp.getN()]; 
@@ -55,98 +59,38 @@ public class MainClass {
         int beta = 2;
         int n = uflp.getN();
         double p[] = new double[uflp.getN()];
-        int choosen = 0;
         int opening[] = new int[uflp.getN()];
         int arrAns[] = new int[uflp.getN()];
         double summation;
         int round = uflp.getN();
         double W[] = new double[uflp.getN()];
         
-        
         System.out.println();
         System.out.println("---Ant System---");
-        
         for(int i=0;i<uflp.getN();i++){
             arrAns[i] = 0;
             W[i] = uflp.getW()[i];
         }
+        for(int j=0;j<round;j++){
+            System.out.println("รอบที่"+(j+1));
+            summation = 0;
+            ant.findProbability(n,summation,W,p,eta,T,alpha,beta);
+            summation = ant.findSummation1(summation,p);
+            System.out.println("sumT&ETA : " + summation);
+            System.out.println("------------------------------");
+            System.out.println("ค่า P หลังจากหารด้วย summation");
+            ant.pDividedBySummation(p,summation);
+            System.out.println("-------------------------------");
+            ant.findPercentage(n, p, percentage);
+            ant.findStation(n,percentage,arrAns,j);
+            ant.choosingStation(opening, j);
+        }
+        ant.printCity(arrAns);
+        System.out.println();
+        ant.printStatus(opening);
         
-        //-----------------------------------------------------------------------------
-
-            for(int j=0;j<round;j++){
-                System.out.println("รอบที่"+(j+1));
-                summation = 0;
-                ant.findEquation(n,W,eta,T,alpha,beta);
-                summation = ant.findSummation1(p);
-                System.out.println("sumT&ETA : " + summation);
-                System.out.println("------------------------------");
-                //-----------------------------------------------------------------------------
-                System.out.println("ค่า P หลังจากหารด้วย summation");
-                ant.pDividedBySummation(p,summation);
-                System.out.println("-------------------------------");
-                //---------------------------------------------------------------------------
-                double temp = 0;
-                for(int i=0;i<uflp.getN();i++){
-
-                    if(i==0){
-                        temp += p[0];
-                        percentage[0] = p[0];
-                        System.out.print("P"+(i+1) +" : "+p[0] + "  ");
-                        System.out.println("ร้อยละP"+(i+1) +" : "+ percentage[0]);
-                    }
-                    else{
-                        temp += p[i];
-                        percentage[i] = temp;
-                        System.out.print("P"+(i+1) +" : "+p[i] + "  ");
-                        System.out.println("ร้อยละP"+(i+1) +" : "+ percentage[i]);    
-                    }  
-                }
-                //------------------------------------------------------------------------------------
-                
-                
-                
-                boolean x = true;
-                do{
-                    double r1 = Math.random();
-                    System.out.println("ค่าสุ่มเลือกเมือง : "+r1);
-                    for(int i=0;i<uflp.getN();i++){
-                        if(r1<=percentage[i]){
-                            choosen = i+1;
-                            System.out.println(choosen);
-                            break;
-                        }              
-                    }
-                    for(int k=0;k<(uflp.getN()-1);k++){
-                        if(choosen == arrAns[k]){
-                            x = true;
-                            break;
-                        }else{
-                            x = false;
-                        }
-                    }arrAns[j] = choosen;
-                }while(x);
-                System.out.println("เมืองที่เลือก : " + choosen);  
-                
-                
-                //--------------------------------------------------------------------------------
-                double r2 = Math.random();
-                
-                System.out.println("ค่าสุ่มเลือกหรือไม่เลือกเมืองไปเป็นคำตอบ : "+r2);
-                if(r2>=0.5){
-                    opening[j] = 1;
-                    System.out.println("เมืองนี้ถูกเลือกไปเป็นคำตอบ"+opening[j]);
-                    System.out.println("#####################################");
-                }else{
-                    opening[j] = 0;
-                    System.out.println("เมืองนี้ไม่ถูกเลือกไปเป็นคำตอบ"+opening[j]);
-                    System.out.println("#####################################");
-                }                  
-            }
-            //----------------------------------------------------------------------     
-                ant.printCity(arrAns);
-                System.out.println();
-                ant.printStatus(opening);
-    
+        //----------------------------------------------------------------
+        
     }
 }
         
