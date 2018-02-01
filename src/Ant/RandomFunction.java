@@ -41,7 +41,8 @@ public class RandomFunction {
     }
 
     public int randomTo(int a, int b) {
-        return random.nextInt(b) + a;
+        int c = random.nextInt(b) + a; System.out.println(c);
+        return c;
     }
     
     public double randomDouble() {

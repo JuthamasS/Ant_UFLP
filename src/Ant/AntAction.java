@@ -13,6 +13,8 @@ import java.text.DecimalFormat;
 import java.util.Properties;
 import pUflp.ActionUFLP;
 import pUflp.TestUFLP;
+import java.util.Random;
+
 public class AntAction {
     
     static double sumW = 0;   //ต้นทุนรวม
@@ -169,28 +171,26 @@ public class AntAction {
     }
     public void checkWorstCase(int n,int[] opening){      //กรณีที่ไม่มีสถานีใดถูกเปิดเลย [0,0,0]
         RandomFunction ran = new RandomFunction();
+        Random random = new Random();
         int value1 = 0;     //ไว้นับว่ามีเลข1กี่ตัวใน[] เช่น[0,1,1] => 2ตัว
         int value0 = 0;     //ไว้นับว่ามีเลข0กี่ตัวใน[] เช่น[0,1,1] => 1ตัว
         
-        for (int i = 0;i<n;i++) {//3
-            if(opening[i] == 1){ //ถ้ามีเลข1ก็นับไว้
+        for (int i = 0;i<n;i++){ 
+            if(opening[i] == 1){            //ถ้ามีเลข1ก็นับไว้
                 value1++;
             } 
             else{
                 value0++;
             }
-            if (value0 == n){            //ถ้าเป็น[0,0,0] ควรที่จะสุ่มใหม่
-                int x = ran.randomTo(1, n);
-                for(int j = 0;j<x;j++) {
-                    int indexOne = ran.randomTo(0, n);
-                    opening[indexOne] = 1;
-                    value1++;
-                }
-
-                   
-            }
         }
-        
+        if(value0 == n){            //ถ้าเป็น[0,0,0] ควรที่จะสุ่มใหม่
+            int x = random.nextInt(n)+1;
+            for(int j = 0;j<x;j++) {
+                int indexOne = random.nextInt(n);
+                opening[indexOne] = 1;
+                value1++;
+            }
+         }
     }
         
 }

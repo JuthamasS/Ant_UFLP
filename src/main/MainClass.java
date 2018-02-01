@@ -94,6 +94,19 @@ public class MainClass {
         System.out.println();
         System.out.println("min : "+C);
     }
+    
+//    public static void main(String[] args){
+//        int[] open = new int[3];
+//        open[0] = 0;
+//        open[1] = 0;
+//        open[2] = 0;
+//        System.out.println("1");
+//        ant.checkWorstCase(3,open);
+//        System.out.println("10");
+//        for(int i=0;i<3;i++){
+//            System.out.println(open[i]);
+//        }
+//    }
 }
         
         
