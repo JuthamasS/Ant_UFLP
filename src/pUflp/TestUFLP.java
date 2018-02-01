@@ -9,6 +9,8 @@ package pUflp;
  *
  * @author Wirasinee
  */
+
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -19,47 +21,47 @@ import java.util.Arrays;
 import java.util.Properties;
 import java.util.Scanner;
 import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.logging.Logger; 
 
 public class TestUFLP {
 
     static Scanner in = new Scanner(System.in);
     static ActionFiles file = new ActionFiles();
 
-    //static double[] w;//ต้นทุนแต่ละโกดัง
     static double sumW = 0;//ต้นทุนรวม
 
+
     public double mainTestold(int[] open, ActionUFLP uflp, Properties textXml) {
-        
-        int[] openStatus = new int[uflp.getN()];      
+        int[] J = new int[uflp.getN()];   //ลูกค้าคนที่ j เลือกสถานีที่ i
+        int[] openStatus = new int[uflp.getM()];      
         double C = Integer.MAX_VALUE;
         double[] w = uflp.getW();
         double sumMinDistance = 0;
-        double[] min = new double[uflp.getM()];
-        int[] contectPeopleStatus = new int[uflp.getN()];
+        double[] min = new double[uflp.getN()];
+        int[] contectPeopleStatus = new int[uflp.getM()];
         double[][] distance = uflp.getDistance();
         
-        int[][] statusNearCustomer = new int[uflp.getM()][uflp.getN()];
+        int[][] statusNearCustomer = new int[uflp.getN()][uflp.getM()];
 
-        for (int j = 0; j < uflp.getM(); j++) {
+        for (int j = 0; j < uflp.getN(); j++) {
             double minDistance = Integer.MAX_VALUE; //ตัวแปรเก็บเส้นทางที่สันที่สุด (ระยะทางโกดังที่ใกล้ที่สุดของลูกค้าค้นนั้น)
-            for (int i = 0; i < uflp.getN(); i++) {
+            for (int i = 0; i < uflp.getM(); i++) {
 
                 if (open[i] == 1) { //ถ้าลองให้มันเปิด เช่น [0,1,1]
 
                     if (minDistance >= distance[j][i]) { //ถ้าระยะทางลูกค้าไปโกดังเป็นเส้นทางสั่นกว่า
 
                         minDistance = distance[j][i];
-
-                        statusNearCustomer[j][i] = 1;              //ให้เปิดโกดัง 
+                        J[j]=(i+1);
+                        statusNearCustomer[j][i] = 1;      //เอาไว้นับว่าเเต่ละสถานีมีลูกค้ากี่คน        //ให้เปิดโกดัง 
                         for (int z = i - 1; z >= 0; z--) {
-                            statusNearCustomer[j][z] = 0;
+                            statusNearCustomer[j][z] = 0;  //รีสถานีที่ไม่ได้เลือกเปนสถานีที่น้อยที่สุดแล้ว
                         }
                     }
                 }
 
             }
-            for (int c = 0; c < uflp.getN(); c++) {
+            for (int c = 0; c < uflp.getM(); c++) {
                 if (statusNearCustomer[j][c] >= 1) {
 
                     contectPeopleStatus[c] += statusNearCustomer[j][c]; //ดูว่ามีลูกค้ากี่ค้นเลือกโกดังที่เปิดแต่ละกรณี
@@ -68,12 +70,14 @@ public class TestUFLP {
             }
             // System.out.println(Arrays.toString(contectPeopleStatus[q]));
             min[j] = minDistance; //จะได้ระยะทางเส้นทางสั่นสุดของแต่ละลูกค้า
-
+            
             sumMinDistance += min[j];
 //System.out.println(Arrays.toString(sumMinDistance));
         }
+        //System.out.println("minDistance"+Arrays.toString(min));
+        //System.out.println("minDistance"+Arrays.toString(J));
         sumW = 0;//ผลรวมต้นทุน
-        for (int i = 0; i < uflp.getN(); i++) {
+        for (int i = 0; i < uflp.getM(); i++) {
             if (open[i] == 1) {
                 sumW += w[i];               //หาต้นทุนการเปิดโกดัง
 
@@ -84,7 +88,7 @@ public class TestUFLP {
 
             C = sumW + sumMinDistance;
 
-            openStatus = open.clone();
+            openStatus = open.clone();    //ต้องโคลนเอาไว้ค่าจะได้ไม่เปลี่ยน
 
         }
         return C;

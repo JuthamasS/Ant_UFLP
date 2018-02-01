@@ -36,7 +36,7 @@ public class MainClass {
     static DecimalFormat df = new DecimalFormat("0.00000");
     
     public static void main(String[] args) throws IOException{
-        location.getLocations();  ///สร้างตำแหน่งของสถานีกับลูกค้า
+        //location.getLocations();  ///สร้างตำแหน่งของสถานีกับลูกค้า
         MainClass mc = new MainClass();
         textXml.loadFromXML(uflp.getXML()); //โหลดไฟล์xmlที่ไว้เก็บstring
         try {
@@ -62,16 +62,15 @@ public class MainClass {
         int opening[] = new int[uflp.getN()];
         int arrAns[] = new int[uflp.getN()];
         double summation;
-        int round = uflp.getN();
         double W[] = new double[uflp.getN()];
-        
+        double C;
         System.out.println();
         System.out.println("---Ant System---");
-        for(int i=0;i<uflp.getN();i++){
+        for(int i=0;i<n;i++){
             arrAns[i] = 0;
             W[i] = uflp.getW()[i];
         }
-        for(int j=0;j<round;j++){
+        for(int j=0;j<n;j++){
             System.out.println("รอบที่"+(j+1));
             summation = 0;
             ant.findProbability(n,summation,W,p,eta,T,alpha,beta);
@@ -90,7 +89,10 @@ public class MainClass {
         ant.printStatus(opening);
         
         //----------------------------------------------------------------
-        
+        ant.checkWorstCase(n, opening);
+        C = ant.findMin(n,opening,uflp);
+        System.out.println();
+        System.out.println("min : "+C);
     }
 }
         
