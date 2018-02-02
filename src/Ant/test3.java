@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.text.DecimalFormat;
 import java.util.Map;
 import static main.MainClass.uflp;
-public class MainClass {
+public class test3 {
     final static long startTime = System.currentTimeMillis();
     static ActionFiles saveFile,saveSeed,creatD;
     static ArrayList<Double> inputFile = null;
@@ -91,50 +91,35 @@ public class MainClass {
         double summation;
         double W[] = new double[uflp.getN()];
         double C;
-        int numOfAnt = 3;
-        int round = 2;
-        
         System.out.println();
         System.out.println("---Ant System---");
         for(int i=0;i<n;i++){
             arrAns[i] = 0;
             W[i] = uflp.getW()[i];
         }
-        for(int k = 0;k<round;k++){
-            System.out.print("---");
-            System.out.print("การเดินรอบที่ "+(k+1));
-            System.out.println("---");
-            for(int j = 0;j<numOfAnt;j++){
-                System.out.print("---");
-                System.out.print("มดตัวที่ "+(j+1));
-                System.out.println("---");
-                for(int i=0;i<n;i++){
-                    System.out.print("---");
-                    System.out.print("สถานีที่"+(i+1));
-                    System.out.println("---");
-                    summation = 0;
-                    ant.findProbability(n,summation,W,p,eta,T,alpha,beta);
-                    summation = ant.findSummation1(summation,p);
-                    System.out.println("ค่า P หลังจากหารด้วยค่า summation และการแบ่งช่วงของค่า P");
-                    ant.pDividedBySummation(p,summation);
-                    ant.findPercentage(n, p, percentage);
-                    ant.findStation(n,percentage,arrAns,i);
-                    ant.choosingStation(opening, i);
-                }
-                ant.printCity(arrAns);
-                System.out.println();
-                ant.printStatus(opening);
-                ant.checkWorstCase(n, opening);
-                C = ant.findMin(n,opening,uflp);
-                System.out.println();
-                System.out.println("minของสถานีทั้งหมดที่เปิด : "+C);
-                System.out.println("#####################################");
-            }   
+        for(int j=0;j<n;j++){
+            System.out.println("รอบที่"+(j+1));
+            summation = 0;
+            ant.findProbability(n,summation,W,p,eta,T,alpha,beta);
+            summation = ant.findSummation1(summation,p);
+            System.out.println("sumT&ETA : " + summation);
+            System.out.println("------------------------------");
+            System.out.println("ค่า P หลังจากหารด้วย summation");
+            ant.pDividedBySummation(p,summation);
+            System.out.println("-------------------------------");
+            ant.findPercentage(n, p, percentage);
+            ant.findStation(n,percentage,arrAns,j);
+            ant.choosingStation(opening, j);
         }
+        ant.printCity(arrAns);
+        System.out.println();
+        ant.printStatus(opening);
         
-        
-        
-        
+        //----------------------------------------------------------------
+        ant.checkWorstCase(n, opening);
+        C = ant.findMin(n,opening,uflp);
+        System.out.println();
+        System.out.println("min : "+C);
     }
     
 //    public static void main(String[] args){  // เอาไว้ test กรณีที่ไม่ถูกเปิดโกดังเลย

@@ -30,15 +30,15 @@ public class AntAction {
             System.out.println("ETA"+(i+1)+" : "+eta[i]);
             p[i] = (Math.pow(T[i], alpha)* Math.pow(eta[i], beta));
             summation += (Math.pow(T[i], alpha)* Math.pow(eta[i], beta)); 
-            System.out.println("p"+(i+1)+" : "+p[i]);
+            System.out.println("p"+(i+1)+"   : "+p[i]);
             //String x = df.format(summation);
-            System.out.println("sum : "+summation);
+            System.out.println("sum  : "+summation);
             System.out.println("-------------------------------------");
         }
     }
     public double findSummation1(double summation,double[] p){
         for(int i=0;i<p.length;i++){
-            System.out.println(p[i]);
+            //System.out.println(p[i]);
             summation += p[i];
         }
         return summation;
@@ -52,7 +52,7 @@ public class AntAction {
     public void pDividedBySummation(double[] p,double summation){
         for(int i=0;i<p.length;i++){
             p[i] = p[i]/summation;      
-            System.out.println(p[i]);
+            //System.out.println(p[i]);
         }
     }
     public void findPercentage(int n,double[] p,double[] percentage){
@@ -70,7 +70,8 @@ public class AntAction {
                 System.out.print("P"+(i+1) +" : "+p[i] + "  ");
                 System.out.println("ร้อยละP"+(i+1) +" : "+ percentage[i]);    
             }  
-                }
+        }
+        System.out.println("-------------------------------------");
     }
     public void findStation(int n,double[] percentage,int[] arrAns,int j){
         boolean x = true;
@@ -81,7 +82,7 @@ public class AntAction {
             for(int i=0;i<n;i++){
                 if(r1<=percentage[i]){
                     choosen = i+1;
-                    System.out.println(choosen);
+                    System.out.println("สถานีที่ถูกสุ่มเลือก : " + choosen);
                     break;
                 }              
             }
@@ -94,6 +95,7 @@ public class AntAction {
                 }
             }arrAns[j] = choosen;
         }while(x);
+        System.out.println("-------------------------------------");
         System.out.println("สถานีที่เลือก : " + choosen);
     }
     public void choosingStation(int[] opening,int j){
@@ -101,12 +103,12 @@ public class AntAction {
             System.out.println("ค่าสุ่มเลือกหรือไม่เลือกสถานีไปเป็นคำตอบ : "+r2);
             if(r2>=0.5){
                 opening[j] = 1;
-                System.out.println("สถานีนี้ถูกเลือกไปเป็นคำตอบ"+opening[j]);
-                System.out.println("#####################################");
+                System.out.println("สถานีนี้ถูกเลือกไปเป็นคำตอบ");
+                System.out.println("-------------------------------------");
             }else{
                 opening[j] = 0;
-                System.out.println("สถานีนี้ไม่ถูกเลือกไปเป็นคำตอบ"+opening[j]);
-                System.out.println("#####################################");
+                System.out.println("สถานีนี้ไม่ถูกเลือกไปเป็นคำตอบ");
+                System.out.println("-------------------------------------");
             }                  
     }
     public void printCity(int[] arrAns){
