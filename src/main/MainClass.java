@@ -82,6 +82,7 @@ public class MainClass {
         double T[] = new double[uflp.getN()];
         double eta[] = new double[uflp.getN()];
         double percentage[] = new double[uflp.getN()]; 
+        
         int alpha = 1;
         int beta = 2;
         int n = uflp.getN();
@@ -90,9 +91,13 @@ public class MainClass {
         int arrAns[] = new int[uflp.getN()];
         double summation;
         double W[] = new double[uflp.getN()];
-        double C;
-        int numOfAnt = 3;
-        int round = 2;
+        double C = 0;
+        int numOfAnt = 3;  //30
+        int round = 2;   //100Gen
+        double[] minCost = new double[round];
+        int[][] minOpening = new int[round][n];
+        double bestMinCost = Integer.MAX_VALUE;
+        int bestMinOpening[] = new int[1];
         
         System.out.println();
         System.out.println("---Ant System---");
@@ -127,9 +132,19 @@ public class MainClass {
                 ant.checkWorstCase(n, opening);
                 C = ant.findMin(n,opening,uflp);
                 System.out.println();
-                System.out.println("minของสถานีทั้งหมดที่เปิด : "+C);
+                System.out.println("minของสถานีทั้งหมดที่เปิด : " + C);
                 System.out.println("#####################################");
-            }   
+                ant.checkBestMinCost(j, C, opening, minCost, minOpening);
+            }
+            //-----------find best min cost-------------
+            minCost[k] = C;
+            for(int l=0;l<n;l++){
+                minOpening[k][l] = opening[l];
+            }
+            ant.checkBestMinCost(k, C, opening, bestMinCost, bestMinOpening);
+            
+            
+            //-------update pheromone here---------------
         }
         
         

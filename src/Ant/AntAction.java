@@ -78,7 +78,7 @@ public class AntAction {
         int choosen = 0;
         do{
             double r1 = Math.random();
-            System.out.println("ค่าสุ่มเลือกสถานี : "+r1);
+            System.out.println("ค่าสุ่มเลือกสถานี  : "+r1);
             for(int i=0;i<n;i++){
                 if(r1<=percentage[i]){
                     choosen = i+1;
@@ -160,12 +160,12 @@ public class AntAction {
             sumMinDistance += min[j];
         }
         sumW = 0;//ผลรวมต้นทุน
-        for (int i = 0; i < uflp.getN(); i++) {
-            if (opening[i] == 1) {
+        for(int i = 0;i<uflp.getN();i++) {
+            if(opening[i] == 1) {
                 sumW += w[i];               //หาต้นทุนการเปิดโกดัง
             }
         }
-        if ((sumW + sumMinDistance) < C) {
+        if((sumW + sumMinDistance) < C) {
             C = sumW + sumMinDistance;
             openStatus = opening.clone();    //ต้องโคลนเอาไว้ค่าจะได้ไม่เปลี่ยน
         }
@@ -192,7 +192,45 @@ public class AntAction {
                 opening[indexOne] = 1;
                 value1++;
             }
-         }
+        }
+    }
+    public void checkBestMinCost(int k,double C,int[] opening,double bestMinCost,int[] bestMinOpening){
+        if(k == 1){
+            bestMinCost = C;
+            for(int i=0;i<opening.length;i++){
+                bestMinOpening[i] = opening[i];
+            }
+        }
+        else{
+            if(C<=bestMinCost){
+                bestMinCost = C;
+                for(int i=0;i<opening.length;i++){
+                    bestMinOpening[i] = opening[i];
+                }
+            }
+        }
+        System.out.println("Best Min Cost        : " + bestMinCost);
+        System.out.println("Best Min Open Status : ");
+        for(int x:bestMinOpening){
+            System.out.print(x + " ");
+        }System.out.println();
+    }
+    public void checkMinCost(int k,double C,int[] opening,double[] minCost,int[][] minOpening){
+        if(k == 1){
+            minCost
+                    = C;
+            for(int i=0;i<opening.length;i++){
+                minOpening[i] = opening[i];
+            }
+        }
+        else{
+            if(C<=minCost){
+                minCost = C;
+                for(int i=0;i<opening.length;i++){
+                    minOpening[i] = opening[i];
+                }
+            }
+        }
     }
         
 }
