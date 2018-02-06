@@ -136,12 +136,13 @@ public class MainClass {
                 ant.checkWorstCase(n, opening);
                 C = ant.findCost(n,opening,uflp);  //เอาจาก opening ไปคิด
                 mincost.setMinCost(k,C);
+                minopening[k].setMinOpening(opening);
                 System.out.println();
                 System.out.println("costของสถานีทั้งหมดที่เปิด : " + C);
                 //---------------------------------------------------------
                 ant.checkMinCost(j,k,C,opening,mincost,minopening); //จบรอบเเล้วก็หา minCostของรอบที่ j
             }
-            ant.checkBestMinCost(bestMinCost, bestMinOpening);
+            ant.checkBestMinCost(k,mincost,minopening,bestMinCost, bestMinOpening);
             
             
             //-------update pheromone after here---------------

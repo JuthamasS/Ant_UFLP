@@ -196,23 +196,18 @@ public class AntAction {
         }
     }
     public void checkMinCost(int j,int k,double C,int[] opening,Cost mincost,Cost[] minopening){
-//        if(j == 0){
-//            mincost.setMinCost(0, C);
-//            for(int i=0;i<opening.length;i++){
-//                minopening[0].setMinOpening(opening);
-//                System.out.println("111");    
-//                        
-//            }
-        //}
-//        else{
+        if(j == 0){
+            mincost.setMinCost(0, C);
+            minopening[0].setMinOpening(opening);
+        }
+        else{
             if(C<mincost.getMinCost(k)){
                 mincost.setMinCost(k, C);
                 for(int i=0;i<opening.length;i++){
                     minopening[0].setMinOpening(opening);
-                    System.out.println("222");
                 }
             }
-        //}
+        }
         System.out.println("Min Cost        : " + mincost.getMinCost(k));
         System.out.print("Min Open Status : ");
         for (int i = 0; i < opening.length; i++) {
@@ -221,28 +216,24 @@ public class AntAction {
         System.out.println();
         System.out.println("#####################################");
     }
-    public void checkBestMinCost(double bestMinCost,int[] bestMinOpening){
-//            if(j == 0){
-//                mincost.setMinCost(0, C);
-//                for(int i=0;i<opening.length;i++){
-//                    minopening[0].setMinOpening(opening);     
-//            }
-//        }
-//        else{
-//            if(C<mincost.getMinCost(k)){
-//                mincost.setMinCost(k, C);
-//                for(int i=0;i<opening.length;i++){
-//                    minopening[0].setMinOpening(opening);
-//                }
-//            }
-//        }
-//        System.out.println("Min Cost        : " + mincost.getMinCost(k));
-//        System.out.print("Min Open Status : ");
-//        for (int i = 0; i < opening.length; i++) {
-//            System.out.print(minopening[k].getMinOpening(i) + " ");
-//        }
-//        System.out.println();
-//        System.out.println("#####################################");
+    public void checkBestMinCost(int k,Cost mincost,Cost[] minopening,double bestMinCost,int[] bestMinOpening){
+        if(k == 0){
+            bestMinCost = mincost.getMinCost(0);
+            bestMinOpening = minopening[0].getMinOpening();
+        }
+        else{   
+            if(mincost.getMinCost(k)<bestMinCost){
+                bestMinCost = mincost.getMinCost(k);
+                bestMinOpening = minopening[k].getMinOpening();
+            }
+        }
+        System.out.println("Best Min Cost        : " + bestMinCost);
+        System.out.print("Best Min Open Status : ");
+        for (int i = 0; i < bestMinOpening.length; i++) {
+            System.out.print(bestMinOpening[i] + " ");
+        }
+        System.out.println();
+        System.out.println("#####################################");
     }
         
 }
