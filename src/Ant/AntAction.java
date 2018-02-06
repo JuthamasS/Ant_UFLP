@@ -109,7 +109,8 @@ public class AntAction {
                 opening[j] = 0;
                 System.out.println("สถานีนี้ไม่ถูกเลือกไปเป็นคำตอบ");
                 System.out.println("-------------------------------------");
-            }                  
+            }
+            
     }
     public void printCity(int[] arrAns){
         System.out.print("สถานี       : ");
@@ -123,7 +124,7 @@ public class AntAction {
             System.out.print(b+" ");
         }
     }
-    public double findMin(int n,int[] opening,ActionUFLP uflp){
+    public double findCost(int n,int[] opening,ActionUFLP uflp){
         TestUFLP u = new TestUFLP();
         double[][] distance = uflp.getDistance();
         double[] w = uflp.getW();
@@ -194,43 +195,54 @@ public class AntAction {
             }
         }
     }
-    public void checkBestMinCost(int k,double C,int[] opening,double bestMinCost,int[] bestMinOpening){
-        if(k == 1){
-            bestMinCost = C;
-            for(int i=0;i<opening.length;i++){
-                bestMinOpening[i] = opening[i];
-            }
-        }
-        else{
-            if(C<=bestMinCost){
-                bestMinCost = C;
+    public void checkMinCost(int j,int k,double C,int[] opening,Cost mincost,Cost[] minopening){
+//        if(j == 0){
+//            mincost.setMinCost(0, C);
+//            for(int i=0;i<opening.length;i++){
+//                minopening[0].setMinOpening(opening);
+//                System.out.println("111");    
+//                        
+//            }
+        //}
+//        else{
+            if(C<mincost.getMinCost(k)){
+                mincost.setMinCost(k, C);
                 for(int i=0;i<opening.length;i++){
-                    bestMinOpening[i] = opening[i];
+                    minopening[0].setMinOpening(opening);
+                    System.out.println("222");
                 }
             }
+        //}
+        System.out.println("Min Cost        : " + mincost.getMinCost(k));
+        System.out.print("Min Open Status : ");
+        for (int i = 0; i < opening.length; i++) {
+            System.out.print(minopening[k].getMinOpening(i) + " ");
         }
-        System.out.println("Best Min Cost        : " + bestMinCost);
-        System.out.println("Best Min Open Status : ");
-        for(int x:bestMinOpening){
-            System.out.print(x + " ");
-        }System.out.println();
+        System.out.println();
+        System.out.println("#####################################");
     }
-    public void checkMinCost(int k,double C,int[] opening,double[] minCost,int[][] minOpening){
-        if(k == 1){
-            minCost
-                    = C;
-            for(int i=0;i<opening.length;i++){
-                minOpening[i] = opening[i];
-            }
-        }
-        else{
-            if(C<=minCost){
-                minCost = C;
-                for(int i=0;i<opening.length;i++){
-                    minOpening[i] = opening[i];
-                }
-            }
-        }
+    public void checkBestMinCost(double bestMinCost,int[] bestMinOpening){
+//            if(j == 0){
+//                mincost.setMinCost(0, C);
+//                for(int i=0;i<opening.length;i++){
+//                    minopening[0].setMinOpening(opening);     
+//            }
+//        }
+//        else{
+//            if(C<mincost.getMinCost(k)){
+//                mincost.setMinCost(k, C);
+//                for(int i=0;i<opening.length;i++){
+//                    minopening[0].setMinOpening(opening);
+//                }
+//            }
+//        }
+//        System.out.println("Min Cost        : " + mincost.getMinCost(k));
+//        System.out.print("Min Open Status : ");
+//        for (int i = 0; i < opening.length; i++) {
+//            System.out.print(minopening[k].getMinOpening(i) + " ");
+//        }
+//        System.out.println();
+//        System.out.println("#####################################");
     }
         
 }

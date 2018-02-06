@@ -15,6 +15,7 @@ import pUflp.Locations;
 import pUflp.TestUFLP;
 import java.util.Random; 
 import Ant.AntAction;
+import Ant.Cost;
 
 /**
  *
@@ -94,10 +95,11 @@ public class MainClass {
         double C = 0;
         int numOfAnt = 3;  //30
         int round = 2;   //100Gen
-        double[] minCost = new double[round];
-        int[][] minOpening = new int[round][n];
+        Cost mincost = new Cost(round);
+        Cost minopening[] = new Cost[round];
         double bestMinCost = Integer.MAX_VALUE;
-        int bestMinOpening[] = new int[1];
+        int bestMinOpening[] = new int[n];
+        
         
         System.out.println();
         System.out.println("---Ant System---");
@@ -106,6 +108,7 @@ public class MainClass {
             W[i] = uflp.getW()[i];
         }
         for(int k = 0;k<round;k++){
+            minopening[k] = new Cost(n);
             System.out.print("---");
             System.out.print("การเดินรอบที่ "+(k+1));
             System.out.println("---");
@@ -129,22 +132,19 @@ public class MainClass {
                 ant.printCity(arrAns);
                 System.out.println();
                 ant.printStatus(opening);
-                ant.checkWorstCase(n, opening);
-                C = ant.findMin(n,opening,uflp);
                 System.out.println();
-                System.out.println("minของสถานีทั้งหมดที่เปิด : " + C);
-                System.out.println("#####################################");
-                ant.checkBestMinCost(j, C, opening, minCost, minOpening);
+                ant.checkWorstCase(n, opening);
+                C = ant.findCost(n,opening,uflp);  //เอาจาก opening ไปคิด
+                mincost.setMinCost(k,C);
+                System.out.println();
+                System.out.println("costของสถานีทั้งหมดที่เปิด : " + C);
+                //---------------------------------------------------------
+                ant.checkMinCost(j,k,C,opening,mincost,minopening); //จบรอบเเล้วก็หา minCostของรอบที่ j
             }
-            //-----------find best min cost-------------
-            minCost[k] = C;
-            for(int l=0;l<n;l++){
-                minOpening[k][l] = opening[l];
-            }
-            ant.checkBestMinCost(k, C, opening, bestMinCost, bestMinOpening);
+            ant.checkBestMinCost(bestMinCost, bestMinOpening);
             
             
-            //-------update pheromone here---------------
+            //-------update pheromone after here---------------
         }
         
         
