@@ -95,22 +95,23 @@ public class AntAction {
                 }
             }arrAns[j] = choosen;
         }while(x);
-        System.out.println("-------------------------------------");
         System.out.println("สถานีที่เลือก : " + choosen);
+        System.out.println("-------------------------------------");
     }
-    public void choosingStation(int[] opening,int j){
-        double r2 = Math.random();
+    public void choosingStation(int[] opening,int[] arrAnsStation){
+        for (int i = 0; i < arrAnsStation.length; i++) {
+            double r2 = Math.random();
             System.out.println("ค่าสุ่มเลือกหรือไม่เลือกสถานีไปเป็นคำตอบ : "+r2);
             if(r2>=0.5){
-                opening[j] = 1;
-                System.out.println("สถานีนี้ถูกเลือกไปเป็นคำตอบ");
+                opening[(arrAnsStation[i]-1)] = 1; 
+                System.out.println("สถานีที่ " + arrAnsStation[i] + " ถูกเลือกไปเป็นคำตอบ");
                 System.out.println("-------------------------------------");
             }else{
-                opening[j] = 0;
-                System.out.println("สถานีนี้ไม่ถูกเลือกไปเป็นคำตอบ");
+                opening[(arrAnsStation[i]-1)] = 0;
+                System.out.println("สถานีที่ " + arrAnsStation[i] + " ไม่ถูกเลือกไปเป็นคำตอบ");
                 System.out.println("-------------------------------------");
             }
-            
+        }
     }
     public void printCity(int[] arrAns){
         System.out.print("สถานี       : ");
@@ -124,27 +125,25 @@ public class AntAction {
             System.out.print(b+" ");
         }
     }
-    public double findCost(int n,int[] opening,ActionUFLP uflp){
+    public double findCost(int n,int m,int[] opening,ActionUFLP uflp){
         TestUFLP u = new TestUFLP();
         double[][] distance = uflp.getDistance();
         double[] w = uflp.getW();
         int[][] statusNearCustomer = new int[uflp.getN()][uflp.getM()];
         int[] contectPeopleStatus = new int[uflp.getM()];
         double C = Integer.MAX_VALUE;
-        int[] J = new int[n];     //ลูกค้าที่ถูกเลือก
+        int[] J = new int[n];     //ลูกค้าที่ถูกเลือกgเป็นลูกค้าคนที่เท่าไหร่
         double sumMinDistance = 0;
         double[] min = new double[uflp.getN()];
         int[] openStatus = new int[uflp.getM()];
         
         
-        for(int j=0;j<n;j++){
+        for(int j=0;j<n;j++){  //สถานี
             double minDistance = Integer.MAX_VALUE;
-            
-            for(int i=0;i<n;i++){
-                if(opening[i] == 1){
-                    if(minDistance >= distance[j][i]){
+            for(int i=0;i<m;i++){ //ลูกค้า
+                if(opening[i] == 1){ 
+                    if(distance[j][i] < minDistance){  //ลูกค้าคนที่ 0 สถานีที่ 0 1 2
                         minDistance = distance[j][i];
-                        J[j] = (i+1);
                         statusNearCustomer[j][i] = 1;   //เอาไว้นับว่าเเต่ละสถานีมีลูกค้ากี่คน
                         for (int z = i - 1; z >= 0; z--) {
                             statusNearCustomer[j][z] = 0;  //รีสถานีที่ไม่ได้เลือกเปนสถานีที่น้อยที่สุดแล้ว
@@ -159,11 +158,20 @@ public class AntAction {
             }
             min[j] = minDistance; //จะได้ระยะทางเส้นทางสั่นสุดของแต่ละลูกค้า
             sumMinDistance += min[j];
+            System.out.println(min[j]);
         }
+        
+        
+        
+        
+        
+        
+        System.out.println("----**");
         sumW = 0;//ผลรวมต้นทุน
         for(int i = 0;i<uflp.getN();i++) {
             if(opening[i] == 1) {
                 sumW += w[i];               //หาต้นทุนการเปิดโกดัง
+                System.out.println(w[i]);
             }
         }
         if((sumW + sumMinDistance) < C) {

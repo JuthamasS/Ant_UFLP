@@ -87,11 +87,12 @@ public class MainClass {
         int alpha = 1;
         int beta = 2;
         int n = uflp.getN();
-        double p[] = new double[uflp.getN()];
-        int opening[] = new int[uflp.getN()];
-        int arrAns[] = new int[uflp.getN()];
+        int m = uflp.getM();
+        double p[] = new double[n];
+        int opening[] = new int[n];
+        int[] arrAnsStation = new int[n];
         double summation;
-        double W[] = new double[uflp.getN()];
+        double W[] = new double[n];
         double C = 0;
         int numOfAnt = 3;  //30
         int round = 2;   //100Gen
@@ -104,7 +105,7 @@ public class MainClass {
         System.out.println();
         System.out.println("---Ant System---");
         for(int i=0;i<n;i++){
-            arrAns[i] = 0;
+            arrAnsStation[i] = 0;
             W[i] = uflp.getW()[i];
         }
         for(int k = 0;k<round;k++){
@@ -126,15 +127,15 @@ public class MainClass {
                     System.out.println("ค่า P หลังจากหารด้วยค่า summation และการแบ่งช่วงของค่า P");
                     ant.pDividedBySummation(p,summation);
                     ant.findPercentage(n, p, percentage);
-                    ant.findStation(n,percentage,arrAns,i);
-                    ant.choosingStation(opening, i);
+                    ant.findStation(n,percentage,arrAnsStation,i);
                 }
-                ant.printCity(arrAns);
+                ant.choosingStation(opening,arrAnsStation);
+                ant.printCity(arrAnsStation);
                 System.out.println();
                 ant.printStatus(opening);
                 System.out.println();
                 ant.checkWorstCase(n, opening);
-                C = ant.findCost(n,opening,uflp);  //เอาจาก opening ไปคิด
+                C = ant.findCost(n,m,opening,uflp);  //เอาจาก opening ไปคิด
                 mincost.setMinCost(k,C);
                 minopening[k].setMinOpening(opening);
                 System.out.println();
