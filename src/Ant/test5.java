@@ -32,7 +32,7 @@ public class test5 {
         open[0] = 1;
         open[1] = 0;
        
-        
+        int[] openStatus = new int[m];
         for (int i = 0; i < n; i++) {
             for (int j = 0; j < m; j++) {
                 if(open[j] == 1){

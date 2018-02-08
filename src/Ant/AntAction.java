@@ -30,7 +30,7 @@ public class AntAction {
             System.out.println("ETA"+(i+1)+" : "+eta[i]);
             p[i] = (Math.pow(T[i], alpha)* Math.pow(eta[i], beta));
             summation += (Math.pow(T[i], alpha)* Math.pow(eta[i], beta)); 
-            System.out.println("p"+(i+1)+"   : "+p[i]);
+            System.out.println("s"+(i+1)+"   : "+p[i]);
             //String x = df.format(summation);
             System.out.println("sum  : "+summation);
             System.out.println("-------------------------------------");
@@ -50,28 +50,38 @@ public class AntAction {
         return summation;
     }
     public void pDividedBySummation(double[] p,double summation){
+        System.out.println("ค่า S หลังจากหารด้วยค่า summation");
         for(int i=0;i<p.length;i++){
             p[i] = p[i]/summation;      
             //System.out.println(p[i]);
         }
     }
     public void findPercentage(int n,double[] p,double[] percentage){
+        System.out.println("ร้อยละของค่า S");
         double temp = 0;
         for(int i=0;i<n;i++){
             if(i==0){
                 temp += p[0];
                 percentage[0] = p[0];
-                System.out.print("P"+(i+1) +" : "+p[0] + "  ");
-                System.out.println("ร้อยละP"+(i+1) +" : "+ percentage[0]);
+                System.out.print("S"+(i+1) +" : "+p[0] + "  ");
+                System.out.println("ร้อยละS"+(i+1) +" : "+ percentage[0]);
             }
             else{
                 temp += p[i];
                 percentage[i] = temp;
-                System.out.print("P"+(i+1) +" : "+p[i] + "  ");
-                System.out.println("ร้อยละP"+(i+1) +" : "+ percentage[i]);    
+                System.out.print("S"+(i+1) +" : "+p[i] + "  ");
+                System.out.println("ร้อยละS"+(i+1) +" : "+ percentage[i]);    
             }  
         }
         System.out.println("-------------------------------------");
+    }
+    public void displayPercentage(int n,double[] percentage){
+        System.out.println("ช่วงของค่า S");
+        System.out.println("0.0000000000000000  <=  S1  <=  " + percentage[0]);
+        for (int i = 0; i < (n-1); i++) {
+            System.out.println(percentage[i] + "  <   S" + (i+2) + "  <=  " + percentage[i+1]);
+        }
+        //System.out.println(percentage[n-1] + "  <=  P" +(n) +"<=  1.0000000000000000");
     }
     public void findStation(int n,double[] percentage,int[] arrAns,int j){
         boolean x = true;
@@ -134,37 +144,32 @@ public class AntAction {
         double C = Integer.MAX_VALUE;
         int[] J = new int[n];     //ลูกค้าที่ถูกเลือกgเป็นลูกค้าคนที่เท่าไหร่
         double sumMinDistance = 0;
-        double[] min = new double[uflp.getN()];
-        int[] openStatus = new int[uflp.getM()];
+        double[] min = new double[uflp.getM()];
+        int[] openStatus = new int[uflp.getN()];
         
         
-        for(int j=0;j<n;j++){  //สถานี
+        for(int j=0;j<m;j++){  //สถานี
             double minDistance = Integer.MAX_VALUE;
-            for(int i=0;i<m;i++){ //ลูกค้า
+            for(int i=0;i<n;i++){ //ลูกค้า
                 if(opening[i] == 1){ 
                     if(distance[j][i] < minDistance){  //ลูกค้าคนที่ 0 สถานีที่ 0 1 2
                         minDistance = distance[j][i];
-                        statusNearCustomer[j][i] = 1;   //เอาไว้นับว่าเเต่ละสถานีมีลูกค้ากี่คน
-                        for (int z = i - 1; z >= 0; z--) {
-                            statusNearCustomer[j][z] = 0;  //รีสถานีที่ไม่ได้เลือกเปนสถานีที่น้อยที่สุดแล้ว
-                        }
+                        //statusNearCustomer[j][i] = 1;   //เอาไว้นับว่าเเต่ละสถานีมีลูกค้ากี่คน
+//                        for (int z = i - 1; z >= 0; z--) {
+//                            statusNearCustomer[j][z] = 0;  //รีสถานีที่ไม่ได้เลือกเปนสถานีที่น้อยที่สุดแล้ว
+//                        }
                     }
                 }
             }
-            for (int c = 0; c < uflp.getN(); c++) {
-                if (statusNearCustomer[j][c] >= 1) {
-                    contectPeopleStatus[c] += statusNearCustomer[j][c]; //ดูว่ามีลูกค้ากี่ค้นเลือกโกดังที่เปิดแต่ละกรณี
-                }
-            }
+//            for (int c = 0; c < uflp.getN(); c++) {
+//                if (statusNearCustomer[j][c] >= 1) {
+//                    contectPeopleStatus[c] += statusNearCustomer[j][c]; //ดูว่ามีลูกค้ากี่ค้นเลือกโกดังที่เปิดแต่ละกรณี
+//                }
+//            }
             min[j] = minDistance; //จะได้ระยะทางเส้นทางสั่นสุดของแต่ละลูกค้า
             sumMinDistance += min[j];
             System.out.println(min[j]);
         }
-        
-        
-        
-        
-        
         
         System.out.println("----**");
         sumW = 0;//ผลรวมต้นทุน
@@ -180,7 +185,8 @@ public class AntAction {
         }
         return C;
     }
-    public void checkWorstCase(int n,int[] opening){      //กรณีที่ไม่มีสถานีใดถูกเปิดเลย [0,0,0]
+    public int[] checkWorstCase(int n,int[] opening){      //กรณีที่ไม่มีสถานีใดถูกเปิดเลย [0,0,0]
+        boolean print = false;
         RandomFunction ran = new RandomFunction();
         Random random = new Random();
         int value1 = 0;     //ไว้นับว่ามีเลข1กี่ตัวใน[] เช่น[0,1,1] => 2ตัว
@@ -195,13 +201,21 @@ public class AntAction {
             }
         }
         if(value0 == n){            //ถ้าเป็น[0,0,0] ควรที่จะสุ่มใหม่
+            print = true;
             int x = random.nextInt(n)+1;
             for(int j = 0;j<x;j++) {
-                int indexOne = random.nextInt(n);
+                int indexOne = random.nextInt(n);;
                 opening[indexOne] = 1;
                 value1++;
             }
         }
+        if(print){
+            System.out.print("             ");
+            for (int i = 0; i < n; i++) {
+                System.out.print(opening[i] + " ");
+            }
+        }
+        return opening;
     }
     public void checkMinCost(int j,int k,double C,int[] opening,Cost mincost,Cost[] minopening){
         if(j == 0){

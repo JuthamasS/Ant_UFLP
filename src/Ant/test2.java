@@ -7,17 +7,18 @@ package Ant;
 
 import java.util.Map;
 import java.util.TreeMap;
+import java.util.Random;
 
 /**
  *
  * @author JuthamasS
  */
 public class test2 {
-    public static void main(String[] args){
-        System.out.println("123");
-//        test2 t = new test2();
-//        t.treeMapDemo();
-    }
+//    public static void main(String[] args){
+//        System.out.println("123");
+////        test2 t = new test2();
+////        t.treeMapDemo();
+//    }
     public static void treeMapDemo(){
         TreeMap<Integer, String> m = new TreeMap<Integer, String>();
         m.put(001,"higiughiphp");
@@ -32,5 +33,13 @@ public class test2 {
             System.out.println(key+value);
         }
                 
+    }
+    
+    public static void main(String[] args){
+        Random ran = new Random();
+        for (int i = 0; i < 16; i++) {
+            System.out.print(Math.random()*1+" ");
+        }
+        
     }
 }

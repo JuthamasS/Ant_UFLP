@@ -16,6 +16,7 @@ import pUflp.TestUFLP;
 import java.util.Random; 
 import Ant.AntAction;
 import Ant.Cost;
+import Ant.Detail;
 
 /**
  *
@@ -42,6 +43,7 @@ public class MainClass {
     static Random random = new Random();
     static AntAction ant = new AntAction();
     static DecimalFormat df = new DecimalFormat("0.00000");
+
     
     public static void main(String[] args) throws IOException{
         //location.getLocations();  ///สร้างตำแหน่งของสถานีกับลูกค้า
@@ -57,6 +59,7 @@ public class MainClass {
         
         try {
             mc.inputFile = file.readFile("D:\\DistanceFile.txt");//D:\\test\\2\\3\\DistanceFile.txt
+            
             //String pathFileCap = pathFiles.get(f);//"D:\\test\\Istanze\\cap71.txt";//pathFiles.get(f);
             //mc.inputFileCap = file.readFile(pathFileCap);//D:\\test\\2\\3\\DistanceFile.txt///"D:\\DistanceFile.txt"//"D:\\cap71.txt"
 //            nameFile = pathFileCap.substring(pathFileCap.lastIndexOf("\\") + 1, pathFileCap.length());
@@ -89,18 +92,19 @@ public class MainClass {
         int n = uflp.getN();
         int m = uflp.getM();
         double p[] = new double[n];
-        int opening[] = new int[n];
-        int[] arrAnsStation = new int[n];
+        int opening[] = new int[n];   //ต้องรีค่าใหม่ตลอดเเล้วค่อยเอาไปเท่ากับคลาส detail
+        int[] arrAnsStation = new int[n];    //ต้องรีค่าใหม่ตลอดเเล้วค่อยเอาไปเท่ากับคลาส detail
         double summation;
         double W[] = new double[n];
         double C = 0;
-        int numOfAnt = 3;  //30
-        int round = 2;   //100Gen
+        int numOfAnt = 5;  //30
+        int round = 10;   //100Gen
         Cost mincost = new Cost(round);
         Cost minopening[] = new Cost[round];
         double bestMinCost = Integer.MAX_VALUE;
         int bestMinOpening[] = new int[n];
-        
+        Detail detail = new Detail();
+        int loop;
         
         System.out.println();
         System.out.println("---Ant System---");
@@ -114,6 +118,8 @@ public class MainClass {
             System.out.print("การเดินรอบที่ "+(k+1));
             System.out.println("---");
             for(int j = 0;j<numOfAnt;j++){
+                detail.setZero(n,opening);
+                detail.setZero(n, arrAnsStation);
                 System.out.print("---");
                 System.out.print("มดตัวที่ "+(j+1));
                 System.out.println("---");
@@ -124,26 +130,29 @@ public class MainClass {
                     summation = 0;
                     ant.findProbability(n,summation,W,p,eta,T,alpha,beta);
                     summation = ant.findSummation1(summation,p);
-                    System.out.println("ค่า P หลังจากหารด้วยค่า summation และการแบ่งช่วงของค่า P");
                     ant.pDividedBySummation(p,summation);
                     ant.findPercentage(n, p, percentage);
+                    ant.displayPercentage(n,percentage);
                     ant.findStation(n,percentage,arrAnsStation,i);
+                    System.out.println("-------------------------------------");
                 }
                 ant.choosingStation(opening,arrAnsStation);
                 ant.printCity(arrAnsStation);
                 System.out.println();
                 ant.printStatus(opening);
                 System.out.println();
-                ant.checkWorstCase(n, opening);
-                C = ant.findCost(n,m,opening,uflp);  //เอาจาก opening ไปคิด
-                mincost.setMinCost(k,C);
-                minopening[k].setMinOpening(opening);
+                opening = ant.checkWorstCase(n, opening);
                 System.out.println();
-                System.out.println("costของสถานีทั้งหมดที่เปิด : " + C);
+                C = ant.findCost(n,m,opening,uflp);  //เอาจาก opening ไปคิด
+                System.out.println(C);
+//                mincost.setMinCost(k,C);
+//                minopening[k].setMinOpening(opening);
+//                System.out.println();
+//                System.out.println("costของสถานีทั้งหมดที่เปิด : " + C);
                 //---------------------------------------------------------
-                ant.checkMinCost(j,k,C,opening,mincost,minopening); //จบรอบเเล้วก็หา minCostของรอบที่ j
+                //ant.checkMinCost(j,k,C,opening,mincost,minopening); //จบรอบเเล้วก็หา minCostของรอบที่ j
             }
-            ant.checkBestMinCost(k,mincost,minopening,bestMinCost, bestMinOpening);
+            //ant.checkBestMinCost(k,mincost,minopening,bestMinCost, bestMinOpening);
             
             
             //-------update pheromone after here---------------

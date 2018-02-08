@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /*
  * To change this license header, choose License Headers in Project Properties.
@@ -63,11 +64,13 @@ public class ActionFiles {
     public ArrayList<Double> readFile(String path){
 		java.io.File file = new java.io.File(path);
 		ArrayList<Double> al = new ArrayList<>();
+                
 		try {
 			BufferedReader br = new BufferedReader(new FileReader(file));
 			String line;
                         
 			while ((line = br.readLine()) != null) {
+                            
 				//System.out.println(line);
                                 String[] arr1 = line.trim().split("\\s+");
                                 for(int i=0;i<arr1.length;i++){
@@ -75,13 +78,14 @@ public class ActionFiles {
                                      al.add(Double.parseDouble(arr1[i]));
                                     
                                 }
-                         
+                            System.out.println(""+line);
                         }
 			br.close();
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+                
         return al;
    
     }
