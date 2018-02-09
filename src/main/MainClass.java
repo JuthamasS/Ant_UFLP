@@ -98,9 +98,10 @@ public class MainClass {
         double W[] = new double[n];
         double C = 0;
         int numOfAnt = 5;  //30
-        int round = 10;   //100Gen
+        int round = 1;   //100Gen
         Cost mincost = new Cost(round);
         Cost minopening[] = new Cost[round];
+        Cost minindex = new Cost();
         double bestMinCost = Integer.MAX_VALUE;
         int bestMinOpening[] = new int[n];
         Detail detail = new Detail();
@@ -134,7 +135,6 @@ public class MainClass {
                     ant.findPercentage(n, p, percentage);
                     ant.displayPercentage(n,percentage);
                     ant.findStation(n,percentage,arrAnsStation,i);
-                    System.out.println("-------------------------------------");
                 }
                 ant.choosingStation(opening,arrAnsStation);
                 ant.printCity(arrAnsStation);
@@ -143,14 +143,20 @@ public class MainClass {
                 System.out.println();
                 opening = ant.checkWorstCase(n, opening);
                 System.out.println();
-                C = ant.findCost(n,m,opening,uflp);  //เอาจาก opening ไปคิด
-                System.out.println(C);
+                int open[] = new int[n];
+                open = opening;
+                C = ant.findCost(n,m,k,open,uflp);  //เอาจาก opening ไปคิด
+                System.out.println("ต้นทุนและค่าใช้จ่ายของมดตัวที่ " + (j+1) +" : " + C);
+                System.out.println("-------------------------------------");
+                for (int i = 0; i < n; i++) {
+                    System.out.println(open[i]);
+                }
 //                mincost.setMinCost(k,C);
 //                minopening[k].setMinOpening(opening);
-//                System.out.println();
-//                System.out.println("costของสถานีทั้งหมดที่เปิด : " + C);
+
+               
                 //---------------------------------------------------------
-                //ant.checkMinCost(j,k,C,opening,mincost,minopening); //จบรอบเเล้วก็หา minCostของรอบที่ j
+                ant.checkMinCost(j,k,C,opening,mincost,minopening,minindex); //จบรอบเเล้วก็หา minCostของรอบที่ j
             }
             //ant.checkBestMinCost(k,mincost,minopening,bestMinCost, bestMinOpening);
             

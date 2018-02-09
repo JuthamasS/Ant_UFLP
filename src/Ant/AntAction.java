@@ -135,7 +135,7 @@ public class AntAction {
             System.out.print(b+" ");
         }
     }
-    public double findCost(int n,int m,int[] opening,ActionUFLP uflp){
+    public double findCost(int n,int m,int k,int[] opening,ActionUFLP uflp){
         TestUFLP u = new TestUFLP();
         double[][] distance = uflp.getDistance();
         double[] w = uflp.getW();
@@ -146,7 +146,8 @@ public class AntAction {
         double sumMinDistance = 0;
         double[] min = new double[uflp.getM()];
         int[] openStatus = new int[uflp.getN()];
-        
+        Cost mincost = new Cost();
+        Cost minopen = new Cost();
         
         for(int j=0;j<m;j++){  //สถานี
             double minDistance = Integer.MAX_VALUE;
@@ -168,15 +169,11 @@ public class AntAction {
 //            }
             min[j] = minDistance; //จะได้ระยะทางเส้นทางสั่นสุดของแต่ละลูกค้า
             sumMinDistance += min[j];
-            System.out.println(min[j]);
         }
-        
-        System.out.println("----**");
         sumW = 0;//ผลรวมต้นทุน
         for(int i = 0;i<uflp.getN();i++) {
             if(opening[i] == 1) {
                 sumW += w[i];               //หาต้นทุนการเปิดโกดัง
-                System.out.println(w[i]);
             }
         }
         if((sumW + sumMinDistance) < C) {
@@ -217,26 +214,52 @@ public class AntAction {
         }
         return opening;
     }
-    public void checkMinCost(int j,int k,double C,int[] opening,Cost mincost,Cost[] minopening){
+    public void checkMinCost(int j,int k,double C,int[] opening,Cost mincost,Cost[] minopening,Cost minindex){
+        int numAnt = 0;
         if(j == 0){
             mincost.setMinCost(0, C);
-            minopening[0].setMinOpening(opening);
+            minopening[k].setMinOpening(opening);
+            minindex.setMinIndex(0);
+            numAnt = 1;
+            
+            System.out.println("Min Cost        : " + mincost.getMinCost(k));
+            System.out.println("มดตัวที่ : " + numAnt);
+            System.out.print("Min Open Status : ");
+            for (int i = 0; i < opening.length; i++) {
+                System.out.print(minopening[k].getMinOpening(i) + " ");
+            }
+            System.out.println();
+            System.out.println("#####################################111");
         }
         else{
-            if(C<mincost.getMinCost(k)){
+            if(C<mincost.getMinCost(k)){ 
                 mincost.setMinCost(k, C);
-                for(int i=0;i<opening.length;i++){
-                    minopening[0].setMinOpening(opening);
+                minopening[k].setMinOpening(opening);
+                minindex.setMinIndex(k);
+                numAnt = j+1;
+                
+                System.out.println("Min Cost        : " + mincost.getMinCost(k));
+                System.out.println("มดตัวที่ : " + numAnt);
+                System.out.print("Min Open Status : ");
+                for (int i = 0; i < opening.length; i++) {
+                    System.out.print(minopening[k].getMinOpening(i) + " ");
                 }
+                System.out.println();
+                System.out.println("#####################################222");
             }
+            else{
+                numAnt = j+1;
+                System.out.println("Min Cost        : " + mincost.getMinCost(k));
+                System.out.println("มดตัวที่ : " + numAnt);
+                System.out.print("Min Open Status : ");
+                for (int i = 0; i < opening.length; i++) {
+                    System.out.print(minopening[k].getMinOpening(i) + " ");
+                }
+                System.out.println();
+                System.out.println("#####################################333");
+            }
+                    
         }
-        System.out.println("Min Cost        : " + mincost.getMinCost(k));
-        System.out.print("Min Open Status : ");
-        for (int i = 0; i < opening.length; i++) {
-            System.out.print(minopening[k].getMinOpening(i) + " ");
-        }
-        System.out.println();
-        System.out.println("#####################################");
     }
     public void checkBestMinCost(int k,Cost mincost,Cost[] minopening,double bestMinCost,int[] bestMinOpening){
         if(k == 0){

@@ -12,8 +12,11 @@ package Ant;
 public class Cost {
     private double minCost[];
     private int minOpening[];
+    private int minIndex;
     
-    
+    public Cost(){
+        
+    }
     public Cost(int n){
         this.minCost = new double[n];
         this.minOpening = new int[n];
@@ -38,5 +41,11 @@ public class Cost {
     }
     public void setMinOpening(int index,int value){
         this.minOpening[index] = value;
+    }
+    public void setMinIndex(int index){
+        this.minIndex = index;
+    }
+    public int getMinIndex(){
+        return minIndex;
     }
 }
